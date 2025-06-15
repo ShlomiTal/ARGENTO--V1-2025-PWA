@@ -5,6 +5,7 @@ import { Settings, Bell, LogOut } from 'lucide-react-native';
 import { useTheme } from './ThemeProvider';
 import { useAppLogoStore } from '@/store/appLogoStore';
 import { useAuth } from './AuthProvider';
+import { useUserStore } from '@/store/userStore';
 
 interface HeaderBarProps {
   title?: string;
@@ -17,15 +18,14 @@ export function HeaderBar({ title, logo, showLogout = true }: HeaderBarProps) {
   const { colors } = useTheme();
   const { appLogo } = useAppLogoStore();
   const { logout } = useAuth();
-  
-  // Use provided logo or fall back to the one in the store
+  const { currentUser } = useUserStore();
+
   const displayLogo = logo || appLogo;
-  
+
   const handleLogout = () => {
     logout();
-    // Navigation is handled by AuthProvider
   };
-  
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.logoContainer}>
@@ -39,11 +39,17 @@ export function HeaderBar({ title, logo, showLogout = true }: HeaderBarProps) {
           <Text style={[styles.appName, { color: colors.primary }]}>Argento</Text>
         )}
       </View>
-      
+
       {title && (
         <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
       )}
-      
+
+      {currentUser?.email && (
+        <Text style={{ fontSize: 12, color: colors.text }}>
+          {currentUser.email}
+        </Text>
+      )}
+
       <View style={styles.actions}>
         <TouchableOpacity 
           style={[styles.iconButton, { backgroundColor: 'rgba(128, 128, 128, 0.1)' }]}
@@ -51,14 +57,14 @@ export function HeaderBar({ title, logo, showLogout = true }: HeaderBarProps) {
         >
           <Bell size={20} color={colors.text} />
         </TouchableOpacity>
-        
+
         <TouchableOpacity 
           style={[styles.iconButton, { backgroundColor: 'rgba(128, 128, 128, 0.1)' }]}
           onPress={() => router.push('/settings')}
         >
           <Settings size={20} color={colors.text} />
         </TouchableOpacity>
-        
+
         {showLogout && (
           <TouchableOpacity 
             style={[styles.iconButton, { backgroundColor: 'rgba(255, 71, 87, 0.1)' }]}
