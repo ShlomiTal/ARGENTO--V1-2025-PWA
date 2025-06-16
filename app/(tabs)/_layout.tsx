@@ -12,10 +12,9 @@ export default function TabLayout() {
   const { currentUser, role } = useUserStore();
   const { appLogo } = useAppLogoStore();
   const { isAuthenticated } = useAuth();
-  
+
   const isAdmin = role === 'admin' || (currentUser && currentUser.role === 'admin');
-  
-  // Custom tab bar icons with app logo
+
   const [tabBarIcons, setTabBarIcons] = useState({
     home: (props: { color: string, focused: boolean }) => (
       appLogo ? (
@@ -48,8 +47,7 @@ export default function TabLayout() {
       <Users size={24} color={props.color} />
     ),
   });
-  
-  // Update tab bar icons if app logo changes
+
   useEffect(() => {
     if (appLogo) {
       setTabBarIcons(prev => ({
@@ -81,12 +79,11 @@ export default function TabLayout() {
       }));
     }
   }, [appLogo]);
-  
-  // If not authenticated, don't render tabs
+
   if (!isAuthenticated) {
     return null;
   }
-  
+
   return (
     <Tabs
       screenOptions={{
@@ -102,7 +99,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Dashboard',
-          tabBarIcon: tabBarIcons.home,
+          tabBarIcon: (props) => tabBarIcons.home(props),
           headerShown: false,
         }}
       />
@@ -110,7 +107,7 @@ export default function TabLayout() {
         name="strategies"
         options={{
           title: 'Strategies',
-          tabBarIcon: tabBarIcons.strategies,
+          tabBarIcon: (props) => tabBarIcons.strategies(props),
           headerShown: false,
         }}
       />
@@ -119,7 +116,7 @@ export default function TabLayout() {
           name="statistics"
           options={{
             title: 'Statistics',
-            tabBarIcon: tabBarIcons.statistics,
+            tabBarIcon: (props) => tabBarIcons.statistics(props),
             headerShown: false,
           }}
         />
@@ -129,7 +126,7 @@ export default function TabLayout() {
           name="users"
           options={{
             title: 'Users',
-            tabBarIcon: tabBarIcons.users,
+            tabBarIcon: (props) => tabBarIcons.users(props),
             headerShown: false,
           }}
         />
