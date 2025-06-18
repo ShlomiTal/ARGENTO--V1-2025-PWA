@@ -11,6 +11,9 @@ export default function RootLayout() {
   const { isDarkMode } = useThemeStore();
   const { isAuthenticated } = useAuthStore();
   
+  // Convert isDarkMode to boolean if it's a string ('1' or '0')
+  const darkMode = isDarkMode === '1';  // Ensure it's a boolean
+
   // Reset persisted state on app start for demo purposes
   useEffect(() => {
     // This is just for demo purposes to ensure a clean state
@@ -28,7 +31,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <StatusBar style={isDarkMode ? 'light' : 'dark'} />
+        <StatusBar style={darkMode ? 'light' : 'dark'} />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="login" options={{ headerShown: false }} />
