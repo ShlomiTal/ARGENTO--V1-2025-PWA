@@ -11,7 +11,7 @@ export default function RootLayout() {
   const { isDarkMode } = useThemeStore();
   const { isAuthenticated } = useAuthStore();
   
-  // Convert isDarkMode to boolean if it's a string ('1' or '0')
+  // Convert isDarkMode to a boolean if it's a string ('1' or '0')
   const darkMode = isDarkMode === '1';  // Ensure it's a boolean
 
   // Reset persisted state on app start for demo purposes
